@@ -39,7 +39,27 @@ To run this project, you'll need:
     By default this project uses the in-memory H2 database.
    All the setup for the database is located in the **src/main/java/resources/application.yaml**
 
-4. Build and run the project:
+3. Build and run the project:
    
    The build is needed only for the first time you're setting up the project on your local environment. Simply do a *mvn build* , or if you want to add any other dependency, remember to add it on the pom.xml and execute the build again.
-   To run this project it can be done by going to the SpringBoot main method (located in the **src/main/java/com/cloudvendor/demo_API/DemoApiApplication.java**) and run as a **springBoot Application**.
+   To run this project it can be done by going to the SpringBoot main method (located in the **src/main/java/com/cloudvendor/demo_API/DemoApiApplication.java**) and run as a **SpringBoot Application**.
+
+4. Access the API:
+
+- **Base URL**: http://localhost:8080/cloudvendor
+- **H2 Console**: http://localhost:8080/h2-console
+- Use JDBC URL: jdbc:h2:mem:vendors-db
+- Username: root
+- Password: root
+
+## API Endpoints
+
+| HTTP Method | Endpoint                      | Description                           | Request Parameters                     | Response Example                  |
+|-------------|-------------------------------|---------------------------------------|----------------------------------------|-----------------------------------|
+| `GET`       | `/cloudvendor/allvendors`     | Retrieve all cloud vendors information | None                                  | `[{"vendorId": 1,"vendorName": "Vendor1","vendorPhoneNumber": "xxxx-xxxx","vendorAddress": "Address 1"}, ...]` |
+| `GET`       | `/cloudvendor/{vendorId}`     | Retrieve a specific cloud vendor information based on Id | `vendorId` (String) | `{"vendorId": 1,"vendorName": "Vendor1","vendorPhoneNumber": "xxxx-xxxx","vendorAddress": "Address 1"}` |
+| `GET`        | `/cloudvendor/{vendorName}`   | Retrieve all cloud vendors information based on Vendor Name | `vendorName` (String) | `[{"vendorId": 1,"vendorName": "Vendor1","vendorPhoneNumber": "xxxx-xxxx","vendorAddress": "Address 1"}, ...]` |
+| `POST`       | `/cloudvendor/createvendor`   | Creates a new cloud vendor an save it on database | `{"vendorName": String,"vendorPhoneNumber": String,"vendorAddress": String}` | `Cloud Vendor created` |
+| `DELETE`     | `cloudvendor/deletevendor/{vendorId}` | Deletes a cloud vendor information based on Id | `vendorId` (String) | `Cloud Vendor Deleted` |
+| `PUT`        | `cloudvendor/updatevendor/{vendorId}` | Updates a cloud vendor information based on Id |   `vendorId` (String), `{"vendorName": String,"vendorPhoneNumber": String,"vendorAddress": String}` | `Cloud Vendor updated` |
+| `PATCH`      | `cloudvendor/updatepart/{vendorId}` | Updates partially a cloud vendor information based on Id | `vendorId`, `fieldToBeUpdated` (String) | `Cloud Vendor partial updated` | 
