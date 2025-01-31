@@ -1,8 +1,8 @@
-package com.mercadona.demo_API.service;
+package com.cloudvendor.demo_API.service;
 
-import com.mercadona.demo_API.exception.CloudVendorNotFoundException;
-import com.mercadona.demo_API.model.CloudVendor;
-import com.mercadona.demo_API.repository.CloudVendorRepository;
+import com.cloudvendor.demo_API.exception.CloudVendorNotFoundException;
+import com.cloudvendor.demo_API.model.CloudVendor;
+import com.cloudvendor.demo_API.repository.CloudVendorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;

@@ -1,7 +1,7 @@
-package com.mercadona.demo_API.service;
+package com.cloudvendor.demo_API.service;
 
 
-import com.mercadona.demo_API.model.CloudVendor;
+import com.cloudvendor.demo_API.model.CloudVendor;
 
 import java.util.List;
 import java.util.Map;

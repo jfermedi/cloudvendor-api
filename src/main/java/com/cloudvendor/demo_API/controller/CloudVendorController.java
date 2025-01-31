@@ -1,7 +1,7 @@
-package com.mercadona.demo_API.controller;
+package com.cloudvendor.demo_API.controller;
 
-import com.mercadona.demo_API.model.CloudVendor;
-import com.mercadona.demo_API.service.CloudVendorService;
+import com.cloudvendor.demo_API.model.CloudVendor;
+import com.cloudvendor.demo_API.service.CloudVendorService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

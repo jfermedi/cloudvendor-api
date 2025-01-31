@@ -1,4 +1,4 @@
-package com.mercadona.demo_API.exception;
+package com.cloudvendor.demo_API.exception;
 
 public class CloudVendorNotFoundException extends RuntimeException{
 

@@ -1,6 +1,6 @@
-package com.mercadona.demo_API.repository;
+package com.cloudvendor.demo_API.repository;
 
-import com.mercadona.demo_API.model.CloudVendor;
+import com.cloudvendor.demo_API.model.CloudVendor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

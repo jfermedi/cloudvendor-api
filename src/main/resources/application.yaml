@@ -1,9 +1,25 @@
 spring:
+  profiles:
+    active: test
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_vendor?useSSL=false
+    url: jdbc:h2:mem:vendors-db
+    driver-class-name: org.h2.Driver
     username: root
     password: root
-    driver-class: com.cj.jdbc.Driver
+    initialization-mode: always
 
-#Jpa settings
-spring.jpa.hibernate.ddl-auto: update
+
+  #JPa settings
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always

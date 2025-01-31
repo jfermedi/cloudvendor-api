@@ -1,4 +1,4 @@
-package com.mercadona.demo_API;
+package com.cloudvendor.demo_API;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

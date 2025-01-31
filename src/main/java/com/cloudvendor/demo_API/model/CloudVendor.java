@@ -1,4 +1,4 @@
-package com.mercadona.demo_API.model;
+package com.cloudvendor.demo_API.model;
 
 
 import jakarta.persistence.*;

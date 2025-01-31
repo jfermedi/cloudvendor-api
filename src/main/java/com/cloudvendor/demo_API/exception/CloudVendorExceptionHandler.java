@@ -1,4 +1,4 @@
-package com.mercadona.demo_API.exception;
+package com.cloudvendor.demo_API.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
