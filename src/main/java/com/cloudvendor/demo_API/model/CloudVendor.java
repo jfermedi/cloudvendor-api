@@ -24,6 +24,7 @@ public class CloudVendor {
     }
 
     public CloudVendor(String vendorId, String vendorAddress, String vendorPhoneNumber, String vendorName) {
+        this.vendorId = Integer.valueOf(vendorId);
         this.vendorAddress = vendorAddress;
         this.vendorPhoneNumber = vendorPhoneNumber;
         this.vendorName = vendorName;
