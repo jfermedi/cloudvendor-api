@@ -11,7 +11,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -115,9 +117,31 @@ class CloudVendorControllerTest {
 
     @Test
     void updateVendorInfo() {
+        CloudVendor cloudVendorToUpdate = new CloudVendor("2","Address 2", "2222-4444", "Azure Cloud");
+
+        when(cloudVendorService.updateCloudVendorInfo(cloudVendorToUpdate, "2")).thenReturn("Cloud Vendor updated");
+
+        String result = cloudVendorController.updateVendorInfo(cloudVendorToUpdate, "2");
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo("Cloud Vendor updated");
     }
 
     @Test
     void updateVendorSpecificInfo() {
+
+        Map<String, Object> dataToUpdate = new HashMap<>();
+        String newAddres = "Address to be updated";
+        dataToUpdate.put("vendorAdress", newAddres);
+
+        when(cloudVendorService.updateSpecificCloudVendorInfo("1", dataToUpdate)).thenReturn("Cloud Vendor partial updated with sucess");
+
+        String result = cloudVendorController.updateVendorSpecificInfo("1", dataToUpdate);
+
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo("Cloud Vendor partial updated with sucess");
+
+
     }
 }
