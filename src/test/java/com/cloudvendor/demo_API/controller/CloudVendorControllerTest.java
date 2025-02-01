@@ -27,6 +27,7 @@ class CloudVendorControllerTest {
     CloudVendorController cloudVendorController;
     CloudVendor cloudVendor;
     CloudVendor cloudVendor2;
+    CloudVendor cloudVendor3;
     AutoCloseable autoCloseable;
 
     @BeforeEach
@@ -34,6 +35,7 @@ class CloudVendorControllerTest {
        autoCloseable = MockitoAnnotations.openMocks(this);
        cloudVendor = new CloudVendor("1", "Address 1", "2222-3333", "Amazon");
        cloudVendor2 = new CloudVendor("2","Address 2", "2222-4444", "Google");
+       cloudVendor3 = new CloudVendor("3","Address 3", "2222-5555", "Google");
     }
 
     @AfterEach
@@ -44,32 +46,71 @@ class CloudVendorControllerTest {
     @Test
     void getAllCloudVendors() {
 
-        List<CloudVendor> cloudVendorList = java.util.List.of(cloudVendor, cloudVendor2);
+        List<CloudVendor> cloudVendorList = List.of(cloudVendor, cloudVendor2);
 
         when(cloudVendorService.getAllCloudVendors()).thenReturn(cloudVendorList);
 
         List<CloudVendor> result = cloudVendorController.getAllCloudVendors();
 
         assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(3);
         assertThat(result.get(0).getVendorId()).isEqualTo(1);
         assertThat(result.get(1).getVendorId()).isEqualTo(2);
+        assertThat(result.get(2).getVendorId()).isEqualTo(3);
     }
 
     @Test
     void getCloudVendorInfoById() {
+
+        when(cloudVendorService.getCloudVendorInfo("1")).thenReturn(cloudVendor);
+
+        CloudVendor result = cloudVendorController.getCloudVendorInfoById("1");
+
+        assertThat(result).isNotNull();
+        assertThat(result.getVendorId()).isEqualTo(1);
+        assertThat(result.getVendorName()).isEqualTo("Amazon");
+        assertThat(result.getVendorAddress()).isEqualTo("Address 1");
+        assertThat(result.getVendorPhoneNumber()).isEqualTo("2222-3333");
+
     }
 
     @Test
     void getCloudVendorByName() {
+
+        List<CloudVendor> cloudVendorList = List.of(cloudVendor2, cloudVendor3);
+
+        when(cloudVendorService.getCloudVendorByName("Google")).thenReturn(cloudVendorList);
+
+        List<CloudVendor> result = cloudVendorController.getCloudVendorByName("Google");
+
+        assertThat(result).isNotNull();
+        assertThat(result.get(0).getVendorId()).isEqualTo(2);
+        assertThat(result.get(1).getVendorId()).isEqualTo(3);
+        assertThat(result.get(0).getVendorName()).isEqualTo("Google");
+        assertThat(result.get(1).getVendorName()).isEqualTo("Google");
     }
 
     @Test
     void createCloudVendorInfo() {
+        CloudVendor cloudVendor = new CloudVendor("Address 4", "1111-4444", "Azure");
+
+        when(cloudVendorService.createCloudVendor(cloudVendor)).thenReturn("Cloud Vendor created");
+
+        String result = cloudVendorController.createCloudVendorInfo(cloudVendor);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo("Cloud Vendor created");
     }
 
     @Test
     void deleteCloudVendor() {
+
+        when(cloudVendorService.deleteCloudVendor(1)).thenReturn("Cloud Vendor deleted");
+
+        String result = cloudVendorController.deleteCloudVendor("1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo("Cloud Vendor deleted");
     }
 
     @Test
