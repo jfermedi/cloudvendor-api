@@ -1,7 +1,9 @@
 package com.cloudvendor.demo_API.service;
 
+import com.cloudvendor.demo_API.exception.CloudVendorNotFoundException;
 import com.cloudvendor.demo_API.model.CloudVendor;
 import com.cloudvendor.demo_API.repository.CloudVendorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -47,7 +48,7 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void createCloudVendor() {
+    void testCreateCloudVendor() {
         when(cloudVendorRepository.save(cloudVendor)).thenReturn(cloudVendor);
 
         String result = cloudVendorService.createCloudVendor(cloudVendor);
@@ -57,7 +58,7 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void getAllCloudVendors() {
+    void testGetAllCloudVendors() {
         List<CloudVendor> cloudVendorList = List.of(cloudVendor,cloudVendor2, cloudVendor3);
 
         when(cloudVendorRepository.findAll()).thenReturn(cloudVendorList);
@@ -74,7 +75,7 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void getCloudVendorInfo() {
+    void testGetCloudVendorInfo() {
 
         when(cloudVendorRepository.findById(1)).thenReturn(Optional.of(cloudVendor));
         when(cloudVendorRepository.findByVendorId(1)).thenReturn(cloudVendor);
@@ -89,7 +90,19 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void updateCloudVendorInfo() {
+    void testGetCloudVendorInfoNotFound(){
+        when(cloudVendorRepository.findById(0)).thenReturn(Optional.empty());
+        String message = "";
+        try {
+            CloudVendor cloudVendorNotfound = cloudVendorService.getCloudVendorInfo("0");
+        }catch (CloudVendorNotFoundException e){
+             message = e.getMessage();
+        }
+        assertThat(message).isEqualTo("Cloud Vendor doesn't exist");
+    }
+
+    @Test
+    void testUpdateCloudVendorInfo() {
         CloudVendor cloudVendorToUpdate =  new CloudVendor( "Address 4", "2222-4444", "Azure");
 
         when(cloudVendorRepository.existsById(1)).thenReturn(true);
@@ -102,7 +115,19 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void deleteCloudVendor() {
+    void testUpdateCloudVendorInfoWhenCloudVendorDoesntExist(){
+        String message = "Cloud Vendor doesn't exist";
+        CloudVendor cloudVendorNotUpdate = new CloudVendor( "Address 4", "2222-4444", "Azure");
+        when(cloudVendorRepository.existsById(0)).thenReturn(false);
+
+        String result = cloudVendorService.updateCloudVendorInfo(cloudVendorNotUpdate, "0");
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(message);
+    }
+
+    @Test
+    void testDeleteCloudVendor() {
 
         when(cloudVendorRepository.findById(2)).thenReturn(Optional.of(cloudVendor2));
 
@@ -113,7 +138,19 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void getCloudVendorByName() {
+    void testDeleteCloudVendorWhenCloudVendorDoesntExist(){
+        String message = "Cloud Vendor doesn't exist";
+
+        when(cloudVendorRepository.findById(0)).thenReturn(Optional.empty());
+
+        String result = cloudVendorService.deleteCloudVendor(0);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(message);
+    }
+
+    @Test
+    void testGetCloudVendorByName() {
         List<CloudVendor> cloudVendorList = List.of(cloudVendor2, cloudVendor3);
 
         when(cloudVendorRepository.findByVendorName("Google")).thenReturn(cloudVendorList);
@@ -127,7 +164,7 @@ class CloudVendorServiceImplTest {
     }
 
     @Test
-    void updateSpecificCloudVendorInfo() {
+    void testUpdateSpecificCloudVendorInfo() {
         Map<String, Object> dataToUpdate = new HashMap<>();
         dataToUpdate.put("vendorName", "Azure");
         String vendorId = "2";
@@ -138,5 +175,25 @@ class CloudVendorServiceImplTest {
 
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo("Cloud Vendor partial updated with sucess");
+    }
+
+    @Test
+    void testUpdateSpecificCloudVendorInfoWhenCloudVendorIdDoesntExist(){
+        Map<String, Object> dataToUpdate = new HashMap<>();
+        dataToUpdate.put("vendorName", "Azure");
+        String vendorId = "0";
+        String message = "Cloud Vendor not found for the id" + vendorId;
+        String messageFound = "";
+        when(cloudVendorRepository.findById(Integer.parseInt(vendorId))).thenReturn(Optional.empty());
+
+        try {
+            String result = cloudVendorService.updateSpecificCloudVendorInfo(vendorId, dataToUpdate);
+        } catch (EntityNotFoundException e) {
+            messageFound = e.getMessage();
+        }
+
+        assertThat(messageFound).isNotNull();
+        assertThat(messageFound).isEqualTo(message);
+
     }
 }

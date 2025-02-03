@@ -74,7 +74,7 @@ public class CloudVendorServiceImpl implements CloudVendorService{
     public String updateSpecificCloudVendorInfo(String vendorId, Map<String, Object> updates) {
         //check if the entity exists
        CloudVendor cloudVendorToFind = cloudVendorRepository.findById(Integer.parseInt(vendorId)).
-               orElseThrow(() -> new EntityNotFoundException(" Cloud Vendor not found for the id" + vendorId));
+               orElseThrow(() -> new EntityNotFoundException("Cloud Vendor not found for the id" + vendorId));
         //loops through the parameters to be updated
        updates.forEach((key, value) -> {
            Field field = ReflectionUtils.findField(CloudVendor.class, key);
